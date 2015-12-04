@@ -1,16 +1,16 @@
 f = open('input.txt','r')
 data = f.read()
-pointsVisited = {}
+pointsVisited = []
 xpos = 0
 ypos = 0
 
-visitedatleastonce = 1
-pointsVisited[hash((xpos, ypos))] = 1
+# explicitly visit 0,0
+numberOfPointsVisitedAtLeastOnce = 1
+pointsVisited.insert(0, (xpos,ypos))
 output = "{x},{y} {c}".format(x=xpos,y=ypos, c=1)
 print(output)
 
 for character in data:
-
     if (character == '>'):
         xpos += 1
     elif (character == '<'):
@@ -20,12 +20,14 @@ for character in data:
     elif (character == 'v'):
         ypos -= 1
 
-    count = pointsVisited.get(hash((xpos, ypos)), 0)  + 1
-    pointsVisited[hash((xpos, ypos))] = count
-    if (count == 1):
-        visitedatleastonce += 1
+    # how many times have we been here before?
+    numberOfTimesPointVisited = len([item for item in pointsVisited if item[0] == xpos and item[1] == ypos])
+    if (0 == numberOfTimesPointVisited):
+        numberOfPointsVisitedAtLeastOnce += 1
 
-    output = "{x},{y} {c}".format(x=xpos,y=ypos, c=count, h=hash((xpos, ypos)))
+    pointsVisited.append((xpos,ypos))
+
+    output = "{x},{y} {c}".format(x=xpos,y=ypos, c=numberOfTimesPointVisited+1)
     print(output)
 
-print(visitedatleastonce)
+print(numberOfPointsVisitedAtLeastOnce)
