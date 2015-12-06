@@ -1,8 +1,10 @@
-# total ribbon length
-# smallest perimeter (ribbon) + volume (bow)
+# Get total length of required ribbon for same presents as part1
+# ribbon required for each present is perimeter of smallest side + bow length
+# the bow length is equal to the volume (except its in one dimension)
 f = open('input.txt','r')
-totallength = 0
+totalLength = 0
 for line in f:
+    # get dimensions from file
     dimensions = line.split('x')
     length = int(dimensions[0])
     width = int(dimensions[1])
@@ -14,6 +16,6 @@ for line in f:
 
     ribbon = min(perimeter1, min(perimeter2, perimeter3))
     bow = length * width * height
-    totallength += ribbon + bow
+    totalLength += ribbon + bow
 
-print(totallength)
+print(totalLength)
