@@ -1,15 +1,23 @@
-f = open('input.txt','r')
-data = f.read()
-pointsVisited = []
-xpos = 0
-ypos = 0
+# Santa is visting houses on an infinite 2-d grid.
+# instructions >,<, ^ and v move him right, left, up and down
+# He delivers a present at every house (including the one at the start position)
+# How many houses receive at least one present?
+# (Or - how many unique houses does he visit?)
+
+# Express each house as a 2d point (x,y)
+# These points will be stored in a list
+# Before appending the point to the list - count the number of times it already exists in the list
+# If we've never seen it before, increment the count of unique visits
 
 # explicitly visit 0,0
-numberOfPointsVisitedAtLeastOnce = 1
-pointsVisited.insert(0, (xpos,ypos))
-output = "{x},{y} {c}".format(x=xpos,y=ypos, c=1)
-print(output)
+xpos = 0
+ypos = 0
+housesVisited = []
+housesVisited.insert(0, (xpos,ypos))
+uniqueVisits = 1
 
+f = open('input.txt','r')
+data = f.read()
 for character in data:
     if (character == '>'):
         xpos += 1
@@ -21,13 +29,11 @@ for character in data:
         ypos -= 1
 
     # how many times have we been here before?
-    numberOfTimesPointVisited = len([item for item in pointsVisited if item[0] == xpos and item[1] == ypos])
-    if (0 == numberOfTimesPointVisited):
-        numberOfPointsVisitedAtLeastOnce += 1
+    # Have we visited this house before?
+    if (0 == len([item for item in housesVisited if item[0] == xpos and item[1] == ypos])):
+        # no, increment the counter
+        uniqueVisits += 1
 
-    pointsVisited.append((xpos,ypos))
+    housesVisited.append((xpos,ypos))
 
-    output = "{x},{y} {c}".format(x=xpos,y=ypos, c=numberOfTimesPointVisited+1)
-    print(output)
-
-print(numberOfPointsVisitedAtLeastOnce)
+print(uniqueVisits)
