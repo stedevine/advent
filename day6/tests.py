@@ -1,5 +1,5 @@
-from part1 import LightGrid
-import pprint
+from lightGrid import LightGrid
+from brightGrid import BrightGrid
 import unittest
 
 class applySwitchTest(unittest.TestCase):
@@ -76,3 +76,35 @@ class count(unittest.TestCase):
         matrix = [[0 for x in range (5)] for x in range(5)]
         LightGrid.processInstruction("turn on 1,1 through 3,3",matrix)
         self.assertEqual(9, LightGrid.countOnLights(matrix))
+
+class applySwitchTest(unittest.TestCase):
+    def test_turn_on(self):
+        self.assertEqual(1, BrightGrid.applySwitch("turn on", 0))
+    def test_turn_off(self):
+        self.assertEqual(0, BrightGrid.applySwitch("turn off", 0))
+    def test_toggle(self):
+        self.assertEqual(4, BrightGrid.applySwitch("toggle", 2))
+
+class totalBrightness(unittest.TestCase):
+    def test_turn_on(self):
+        matrix = [[0 for x in range (5)] for x in range(5)]
+        BrightGrid.processInstruction("turn on 1,1 through 3,3",matrix)
+        self.assertEqual(9, BrightGrid.countTotalBrightness(matrix))
+        BrightGrid.processInstruction("turn on 1,1 through 3,3",matrix)
+        self.assertEqual(18, BrightGrid.countTotalBrightness(matrix))
+        BrightGrid.processInstruction("turn off 1,1 through 3,3",matrix)
+        self.assertEqual(9, BrightGrid.countTotalBrightness(matrix))
+        BrightGrid.processInstruction("toggle 1,1 through 3,3",matrix)
+        self.assertEqual(27, BrightGrid.countTotalBrightness(matrix))
+    def test_turn_off(self):
+        matrix = [[0 for x in range (5)] for x in range(5)]
+        BrightGrid.processInstruction("turn on 1,1 through 3,3",matrix)
+        BrightGrid.processInstruction("turn off 1,1 through 3,3",matrix)
+        self.assertEqual(0, BrightGrid.countTotalBrightness(matrix))
+        BrightGrid.processInstruction("turn off 1,1 through 3,3",matrix)
+        self.assertEqual(0, BrightGrid.countTotalBrightness(matrix))
+    def test_toggle(self):
+        matrix = [[0 for x in range (5)] for x in range(5)]
+        BrightGrid.processInstruction("turn on 1,1 through 3,3",matrix)
+        BrightGrid.processInstruction("toggle 1,1 through 3,3",matrix)
+        self.assertEqual(27, BrightGrid.countTotalBrightness(matrix))
