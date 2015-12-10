@@ -138,6 +138,7 @@ class processCommandList(unittest.TestCase):
         LogicGate.processCommandList(commands, wireSignalMap)
         self.assertEqual(65434, wireSignalMap['a'])
 
+    # python -m unittest test.processCommandList.test_puzzle_input
     def test_puzzle_input(self):
         wireSignalMap = {}
         commands = []

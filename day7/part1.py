@@ -19,9 +19,7 @@ commands= []
 wireSignalMap = {}
 f = open('input.txt','r')
 for line in f:
-    commands.append(commands.append(LogicGate.parseInstruction(line.strip())))
-
-print(commands[0])
+    commands.append(LogicGate.parseInstruction(line.strip()))
 
 LogicGate.processCommandList(commands, wireSignalMap)
 
