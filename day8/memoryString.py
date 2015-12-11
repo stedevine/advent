@@ -35,3 +35,20 @@ class MemoryString :
 
         #print ("{s}{i} --> {m}{j}".format(s=stripped, m=memoryString, i=codeCharacters, j=memoryCharacters))
         return {'memoryCharacters' : memoryCharacters, 'codeCharacters' : codeCharacters}
+
+    def countEncodedCharacters(stripped):
+        # The input will be in quotes : "input"
+        unencodedCharacters = 2
+        encodedCharacters = 6
+        # Examine the text between the quotes - look for values to escape : ", \
+        index = 1
+        while index < (len(stripped) - 1) :
+            if (stripped[index] == "\\" or stripped[index] == "\"") :
+                encodedCharacters += 2
+                unencodedCharacters += 1
+            else:
+                encodedCharacters += 1
+                unencodedCharacters += 1
+            index += 1
+        #print ("{s}{i} --> {m}{j}".format(s=stripped, m=memoryString, i=codeCharacters, j=memoryCharacters))
+        return {'unencodedCharacters' : unencodedCharacters, 'encodedCharacters' : encodedCharacters}
