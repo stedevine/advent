@@ -14,21 +14,38 @@ def getDistance(locationA, locationB, locations):
         return 0
     return entry["distance"]
 
+def getLocation(line):
+    start = line.split(" to ")[0]
+    end = line.split(" to ")[1].split(" = ")[0]
+    distance = int(line.split(" = ")[1])
+    result = { "start" : start, "end" : end, "distance" : distance }
+    #print(result)
+    return result
 
+locations = []
+f = open('input.txt','r')
+for line in f:
+    locations.append(getLocation(line))
 
+'''
 locations = [
 { "start" : "London", "end" : "Dublin", "distance" : 464 },
 { "start" : "London", "end" : "Belfast", "distance" : 518 },
 { "start" : "Dublin", "end" : "Belfast", "distance" : 141 }]
+'''
 
-toStart = [ "London", "Belfast", "Dublin"]
+distances = []
+toStart = set()
+for item in locations :
+    toStart.add(item["start"])
+    toStart.add(item["end"])
+
+#print(toStart)
 for currentLocation in toStart :
-    toVisit = [ "London", "Belfast", "Dublin"]
+    toVisit = list(toStart)
+    #print(currentLocation)
 
     totalDistance = 0
-    #print(locations)
-    # Start at London
-    #currentLocation = "London"
     toVisit.remove(currentLocation)
     totalDistance = 0
 
@@ -38,14 +55,17 @@ for currentLocation in toStart :
         for destination in toVisit :
             nextlocations.append({"end" : destination, "distance" : getDistance(currentLocation, destination, locations)})
 
-        print (nextlocations)
+        #print (nextlocations)
         # select the closest one
         closestlocation = min(nextlocations, key=lambda x : x["distance"])
-        print (closestlocation)
+        #print (closestlocation)
 
         # visit this location
         currentLocation = closestlocation["end"]
         toVisit.remove(currentLocation)
         totalDistance += closestlocation["distance"]
 
-    print(totalDistance)
+    #print(totalDistance)
+    distances.append(totalDistance)
+
+print(min(distances))
