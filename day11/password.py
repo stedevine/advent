@@ -60,7 +60,7 @@ class Password:
     def getNextPassword(password):
         value = Password.increment(password)
         while not Password.isValid(value):
-            print(value)
+            #print(value)
             value = Password.increment(value)
 
         return value
