@@ -5,17 +5,23 @@ class JsonCounter:
 #        print(data)
 
     def getTotalForObjectRecursive(jsonObject):
+        print(type(jsonObject))
         total = 0
         if (type(jsonObject) is int) :
             print(jsonObject)
             return jsonObject
 
+        if (type(jsonObject) is str):
+            return 0    
+
         if (type(jsonObject) is dict):
+            #print(jsonObject)
             for key in jsonObject:
                 total += JsonCounter.getTotalForObjectRecursive(jsonObject[key])
             return total
 
         if (type(jsonObject) is list):
+            #print(jsonObject)
             for item in jsonObject:
                 total += JsonCounter.getTotalForObjectRecursive(item)
             return total
