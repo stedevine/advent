@@ -1,9 +1,11 @@
 from jsonCounter import JsonCounter
+from jsonCounter import JsonCounterNoRed
 import unittest
 
 class getTotal(unittest.TestCase):
     def test_json_object(self):
         self.assertEqual(0,JsonCounter.getTotalForObject({}))
+        self.assertEqual(0,JsonCounter.getTotalForObject({'a' : 'hello'}))
         self.assertEqual(0,JsonCounter.getTotalForObject({'a' : 0}))
         self.assertEqual(0,JsonCounter.getTotalForObject({'a' : 0, 'b' : 0}))
         self.assertEqual(6,JsonCounter.getTotalForObject({'a' : 1, 'b' : 2, 'c' : 3}))
@@ -26,3 +28,10 @@ class getTotal(unittest.TestCase):
     def test_json_array_of_arrays(self):
         self.assertEqual(3,JsonCounter.getTotalForObject({'a' : [{'b' :1, 'c' :2}]}))
         self.assertEqual(3,JsonCounter.getTotalForObject([[3]]))
+
+class getTotalNoRed(unittest.TestCase):
+    def test_no_red(self):
+        self.assertEqual(6,JsonCounterNoRed.getTotalForObjectNoRed([1,2,3]))
+        self.assertEqual(4,JsonCounterNoRed.getTotalForObject([1,{"c":"red", "b": 2},3]))
+        self.assertEqual(0,JsonCounterNoRed.getTotalForObjectNoRed({"d":"red","e":[1,2,3,4],"f":5}))
+        self.assertEqual(6,JsonCounterNoRed.getTotalForObjectNoRed([1,"red",5]))
