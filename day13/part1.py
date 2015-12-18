@@ -18,7 +18,7 @@ def get_relationship(line):
     points = int(words[3])
     if (words[4] == "lose"):
         points = points * -1
-    return {'left': words[0], 'right' : words[-1].trim('.'), 'points': points}
+    return {'left': words[0], 'right' : words[-1].strip('.\n'), 'points': points}
 #print("\n".join(all_perms("ABDC")))
 
 relationships = list()
