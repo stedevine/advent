@@ -1,39 +1,45 @@
+"""This script solves the first question on http://adventofcode.com/day/3"""
+
 # Santa is visting houses on an infinite 2-d grid.
 # instructions >,<, ^ and v move him right, left, up and down
 # He delivers a present at every house (including the one at the start position)
 # How many houses receive at least one present?
 # (Or - how many unique houses does he visit?)
 
-# Express each house as a 2d point (x,y)
-# These points will be stored in a list
-# Before appending the point to the list - count the number of times it already exists in the list
-# If we've never seen it before, increment the count of unique visits
+# When Santa visits a house express the position as a string
+# then add this string to a dictionary
+# (each item will be unique)
 
-# explicitly visit 0,0
-xpos = 0
-ypos = 0
-housesVisited = []
-housesVisited.insert(0, (xpos,ypos))
-uniqueVisits = 1
 
-f = open('input.txt','r')
-data = f.read()
-for character in data:
-    if (character == '>'):
-        xpos += 1
-    elif (character == '<'):
-        xpos -= 1
-    elif (character == '^'):
-        ypos += 1
-    elif (character == 'v'):
-        ypos -= 1
+def get_position(position, instruction):
+    """Given the current position and the instruction get the new position"""
+    if (instruction == '>'):
+        position['x'] += 1
+    elif (instruction == '<'):
+        position['x'] -= 1
+    elif (instruction == '^'):
+        position['y'] += 1
+    elif (instruction == 'v'):
+        position['y'] -= 1
 
-    # how many times have we been here before?
-    # Have we visited this house before?
-    if (0 == len([item for item in housesVisited if item[0] == xpos and item[1] == ypos])):
-        # no, increment the counter
-        uniqueVisits += 1
+    return position
 
-    housesVisited.append((xpos,ypos))
+def number_of_unique_visits(instructions):
+    """count the number of unique visits"""
 
-print(uniqueVisits)
+    position = {'x' : 0, 'y' : 0}
+    # explicitly visit 0,0
+    unique_visits = {"x:" + str(position['x']) + ", y:" + str(position['y'])}
+
+    for instruction in instructions:
+        position = get_position(position, instruction)
+        unique_visits.add("x:" + str(position['x']) + ", y:" + str(position['y']))
+
+    return len(unique_visits)
+
+def read_file(file_name):
+    """Helper function, read file return contents as string"""
+    file_handle = open(file_name, 'r')
+    return file_handle.read()
+
+print(number_of_unique_visits(read_file('input.txt')))
