@@ -10,30 +10,33 @@
 # then add this string to a dictionary
 # (each item will be unique)
 
-
 def get_position(position, instruction):
     """Given the current position and the instruction get the new position"""
-    if (instruction == '>'):
+    if instruction == '>':
         position['x'] += 1
-    elif (instruction == '<'):
+    elif instruction == '<':
         position['x'] -= 1
-    elif (instruction == '^'):
+    elif instruction == '^':
         position['y'] += 1
-    elif (instruction == 'v'):
+    elif instruction == 'v':
         position['y'] -= 1
 
     return position
+
+def get_position_as_string(position):
+    """Given a postion return that position as a string"""
+    return "x:" + str(position['x']) + ", y:" + str(position['y'])
 
 def number_of_unique_visits(instructions):
     """count the number of unique visits"""
 
     position = {'x' : 0, 'y' : 0}
     # explicitly visit 0,0
-    unique_visits = {"x:" + str(position['x']) + ", y:" + str(position['y'])}
+    unique_visits = {get_position_as_string(position)}
 
     for instruction in instructions:
         position = get_position(position, instruction)
-        unique_visits.add("x:" + str(position['x']) + ", y:" + str(position['y']))
+        unique_visits.add(get_position_as_string(position))
 
     return len(unique_visits)
 
