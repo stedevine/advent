@@ -1,21 +1,32 @@
-# At which instruction does Santa first enter the basement
-# that is the current floor = -1
-# The first instruction is 1 (not 0)
-# ( -> move up
-# ) -> move down
+"""This script solves the second question on http://adventofcode.com/day/1"""
 
-f = open('input.txt','r')
-data = f.read()
-currentFloor = 0
-index = 1
-for character in data:
-    if (character == '('):
-        currentFloor += 1
-    else:
-        currentFloor -= 1
+def basement_position(instructions):
+    """At which instruction does Santa first enter the basement?"""
+    # The basement is level -1
+    # The position of the first instruction is 1 (not 0)
+    # ( -> move up
+    # ) -> move down
+    # Other characters are not supported.
 
-    if (currentFloor == -1):
-        print(index)
-        break
+    current_floor = 0
+    position = 1
+    for instruction in instructions:
+        if instruction == '(':
+            current_floor += 1
+        else:
+            current_floor -= 1
 
-    index += 1
+        if current_floor == -1:
+            return position
+
+        position += 1
+
+    # not found
+    return -1
+
+def read_file(file_name):
+    """Helper function, read file return contents as string"""
+    file_handle = open(file_name, 'r')
+    return file_handle.read()
+
+print(basement_position(read_file('input.txt')))
