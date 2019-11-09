@@ -8,6 +8,7 @@ def get_reversed_dictionary(input_file):
                 source = line.split(' => ')[0].strip()
                 target = line.split(' => ')[1].strip()
                 reversed_dictionary.update({target:source})
+    print(reversed_dictionary)
     return reversed_dictionary
 
 def get_step_count(input_molecule, reversed_dictionary):
@@ -32,9 +33,40 @@ def get_step_count(input_molecule, reversed_dictionary):
     print(input_molecule)
     return steps
 
+def length_of_path_to_e(reversed_dictionary):
+    processed_dictionary = {}
+    for key in reversed_dictionary.keys():
+        steps_to_e = 0
+        value = key
+        while(True):
+            steps_to_e = steps_to_e + 1
+            value = reversed_dictionary.get(value)
+            if (value == None):
+                processed_dictionary.update({key:-1})
+                break
+            if (value == 'e'):
+                processed_dictionary.update({key:steps_to_e})
+                break
+    print(processed_dictionary)
+
+    #value = reversed_dictionary[key]
+    #if value == 'e':
+    #    return steps_to_e
+    #else:
+    #    steps_to_e = steps_to_e + 1
+    #    value = reversed_dictionary[value]
+
+    #if value == 'e':
+    #    return steps_to_e
+    #else:
+    #    steps_to_e = steps_to_e + 1
+    #    value = reversed_dictionary[value]
+
+
 def get_count_recursive(input_molecule, reversed_dictionary, step_count):
-    print('{} {}'.format(step_count,input_molecule))
-    if (input_molecule == 'e'):
+    print('{} {}'.format(step_count, input_molecule))
+    if (input_molecule.strip() == 'e'):
+        print('found path')
         return step_count
 
     keys = sorted(reversed_dictionary.keys(), key=len)
@@ -47,10 +79,11 @@ def get_count_recursive(input_molecule, reversed_dictionary, step_count):
                 # replace the key with the value
                 #print('found {} replacing with {}'.format(key, reversed_dictionary[key]))
                 input_molecule = input_molecule.replace(key, reversed_dictionary[key],1)
-                get_count_recursive(input_molecule, reversed_dictionary, step_count)
 
-    print('Dead end')
-    return
+    return get_count_recursive(input_molecule, reversed_dictionary, step_count)
+
+    #print('Dead end')
+    #return
 
 # e => H
 # e => O
@@ -69,18 +102,22 @@ if __name__ == '__main__':
     'OH': 'H',
     'HH': 'O'
     }
-    print(get_step_count(molecule, reversed_dictionary))
+    print(length_of_path_to_e(reversed_dictionary))
+
+    #print(get_count_recursive(molecule, reversed_dictionary,0))
     # Simple deadend
     molecule = 'KAiHOHOHO'
     reversed_dictionary = {
-        #'KAiHO' : 'K',
+        'KAiHO' : 'K',
         'HO' : 'H',
         'KAi' : 'H',
         'HH' : 'H',
         'H' : 'e',
         'ee' : 'e'
     }
-    print(get_count_recursive(molecule, reversed_dictionary,0))
+    print(length_of_path_to_e(reversed_dictionary))
+    print(length_of_path_to_e(get_reversed_dictionary('./medicine_input.txt')))
+    #print(get_count_recursive(molecule, reversed_dictionary,0))
     #print(get_step_count(get_molecule('./medicine_input.txt'),get_reversed_dictionary('./medicine_input.txt')))
     # NRnBSiRnCaRnFArYFArFArF
     # Need to come up with a new method
