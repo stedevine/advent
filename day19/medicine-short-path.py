@@ -32,6 +32,26 @@ def get_step_count(input_molecule, reversed_dictionary):
     print(input_molecule)
     return steps
 
+def get_count_recursive(input_molecule, reversed_dictionary, step_count):
+    print('{} {}'.format(step_count,input_molecule))
+    if (input_molecule == 'e'):
+        return step_count
+
+    keys = sorted(reversed_dictionary.keys(), key=len)
+    keys.reverse()
+    if any (k in keys for k in input_molecule):
+        step_count = step_count + 1
+        for key in keys:
+            index_of_transformed = input_molecule.find(key)
+            if index_of_transformed > -1:
+                # replace the key with the value
+                #print('found {} replacing with {}'.format(key, reversed_dictionary[key]))
+                input_molecule = input_molecule.replace(key, reversed_dictionary[key],1)
+                get_count_recursive(input_molecule, reversed_dictionary, step_count)
+
+    print('Dead end')
+    return
+
 # e => H
 # e => O
 # H => HO
@@ -50,6 +70,17 @@ if __name__ == '__main__':
     'HH': 'O'
     }
     print(get_step_count(molecule, reversed_dictionary))
-    print(get_step_count(get_molecule('./medicine_input.txt'),get_reversed_dictionary('./medicine_input.txt')))
+    # Simple deadend
+    molecule = 'KAiHOHOHO'
+    reversed_dictionary = {
+        #'KAiHO' : 'K',
+        'HO' : 'H',
+        'KAi' : 'H',
+        'HH' : 'H',
+        'H' : 'e',
+        'ee' : 'e'
+    }
+    print(get_count_recursive(molecule, reversed_dictionary,0))
+    #print(get_step_count(get_molecule('./medicine_input.txt'),get_reversed_dictionary('./medicine_input.txt')))
     # NRnBSiRnCaRnFArYFArFArF
     # Need to come up with a new method
