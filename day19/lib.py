@@ -1,3 +1,21 @@
+def generate_molecules(input_molecule, replacement_dictionary):
+    # Turn the input string into a list of elements.
+    element_list = get_element_list(input_molecule)
+    unique_molecules = set()
+    for i in range(0,len(element_list)):
+        # We can only change the element if there is a replacement defined for
+        # the specific molecule
+        if replacement_dictionary.get(element_list[i]):
+            # Only apply the replacement to a single element
+            # Leave the rest of the molecule unchanged.
+            first_part = ''.join(element_list[0:i])
+            second_part = ''.join(element_list[i+1:len(element_list)])
+            for replacement in replacement_dictionary.get(element_list[i]):
+                transformed_molecule = '{}{}{}'.format(first_part, replacement, second_part)
+                unique_molecules.add(transformed_molecule)
+
+    return unique_molecules
+
 def get_replacement_dictionary(input_file):
     replacements = {}
     with open(input_file) as file:
@@ -11,6 +29,17 @@ def get_replacement_dictionary(input_file):
                     replacements[key].append(value)
 
     return replacements
+
+def get_reversed_dictionary(input_file):
+    reversed_dictionary = {}
+    with open(input_file) as file:
+        for line in file:
+            if ' => ' in line:
+                source = line.split(' => ')[0].strip()
+                target = line.split(' => ')[1].strip()
+                reversed_dictionary.update({target:source})
+    print(reversed_dictionary)
+    return reversed_dictionary
 
 def get_molecule(input_file):
     with open(input_file) as file:

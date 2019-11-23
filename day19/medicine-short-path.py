@@ -1,4 +1,5 @@
-from lib import get_molecule
+from lib import get_molecule,generate_molecules, get_element_list
+from random import shuffle
 
 def get_reversed_dictionary(input_file):
     reversed_dictionary = {}
@@ -85,6 +86,60 @@ def get_count_recursive(input_molecule, reversed_dictionary, step_count):
     #print('Dead end')
     #return
 
+def process_recursive(molecule, dictionary, step_count, old):
+    if molecule in old:
+        print('already processed {}'.format(molecule))
+        return 0
+
+    print('input {} {}'.format(step_count, molecule))
+    old.add(molecule)
+    if (molecule == 'e'):
+        print('path found in {} steps'.format(step_count))
+        return step_count
+    if ('e' in molecule):
+        return 0
+
+    transformations = get_transformations(molecule, dictionary)
+    #print('total transformations is {} for {}'.format(len(transformations), molecule))
+    #if len(transformations) == 0:
+    #    return -1
+    #print('all transformations from this point :{}'.format(','.join(transformations)))
+
+    for transformed_molecule in transformations:
+        process_recursive(transformed_molecule, dictionary, step_count + 1, old)
+
+    #print('no transformations left')
+
+    return -1
+
+def get_transformations(molecule, dictionary):
+    transformations = set()
+    #elements = get_element_list(molecule)
+    keys = dictionary.keys()
+    for key in keys:
+        if key in molecule:
+            #print('key {} is in molecule'.format(key, molecule))
+            for i in range(0,len(molecule)):
+                #if (key == elements[i]):
+                #print()
+                transformed_molecule = '{}{}'.format(molecule[0:i],molecule[i:len(molecule)].replace(key,dictionary[key],1))
+                #print('got {}{}'.format(molecule[0:i], molecule[i:len(molecule)].replace(key,dictionary[key],1)))
+                if not (transformed_molecule != 'e' and 'e' in transformed_molecule):
+                    transformations.add(transformed_molecule)
+    if molecule in transformations:
+        transformations.remove(molecule)
+    #if len(transformations) == 0:
+        #print('dead end for molecule {}'.format(molecule))
+    t = list(transformations)
+    shuffle(t)
+    #t = sorted(list(transformations), key=len)
+    #t.reverse()
+    return t
+
+
+
+
+
 # e => H
 # e => O
 # H => HO
@@ -94,7 +149,7 @@ def get_count_recursive(input_molecule, reversed_dictionary, step_count):
 # HOH       3 steps
 # HOHOHO    6 steps
 if __name__ == '__main__':
-    molecule = 'HOHOHO'
+    molecule = 'HHHHHHHHHHHHHHHHHHHHH'
     reversed_dictionary = {
     'H': 'e',
     'O': 'e',
@@ -102,7 +157,9 @@ if __name__ == '__main__':
     'OH': 'H',
     'HH': 'O'
     }
-    print(length_of_path_to_e(reversed_dictionary))
+    print(process_recursive(molecule, reversed_dictionary, 0, set()))
+    '''
+    #print(length_of_path_to_e(reversed_dictionary))
 
     #print(get_count_recursive(molecule, reversed_dictionary,0))
     # Simple deadend
@@ -115,9 +172,18 @@ if __name__ == '__main__':
         'H' : 'e',
         'ee' : 'e'
     }
-    print(length_of_path_to_e(reversed_dictionary))
+    print(process_recursive(molecule, reversed_dictionary, 0))
+    '''
+
+
     print(length_of_path_to_e(get_reversed_dictionary('./medicine_input.txt')))
     #print(get_count_recursive(molecule, reversed_dictionary,0))
+
+    molecule = get_molecule('./medicine_input.txt'),
+    reversed_dictionary = get_reversed_dictionary('./medicine_input.txt')
+    print(molecule[0])
+    print(process_recursive(molecule[0], reversed_dictionary, 0, set()))
+
     #print(get_step_count(get_molecule('./medicine_input.txt'),get_reversed_dictionary('./medicine_input.txt')))
     # NRnBSiRnCaRnFArYFArFArF
     # Need to come up with a new method
