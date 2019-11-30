@@ -10,6 +10,10 @@ def presents_at_house(house_number):
 puzzle_input = 34000000
 house_number = 0
 
+for i in range(1, 33):
+    print('{} {}'.format(i, presents_at_house(i)))
+
+'''
 # Use binary search
 min = 0
 max = 500000000
@@ -23,7 +27,7 @@ while(True):
         min = house_number + 1
     house_number = int((min + max) / 2)
 
-'''
+
 while (current_value < puzzle_input):
     house_number = house_number + 1
     print(house_number)
